@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+}
+
+.section {
+  @apply mx-auto max-w-6xl px-6;
+}
+
+.glass-nav {
+  @apply sticky top-0 z-20 border-b border-stroke bg-background/80 backdrop-blur;
+}
+
+.gradient-ring {
+  background: radial-gradient(circle at top, rgba(255, 106, 61, 0.16), transparent 65%);
+}
