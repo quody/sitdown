@@ -13,12 +13,36 @@ const navLinks = [
   { label: "Pricing", href: "#pricing" },
 ];
 
-const digestLines = [
-  "✅ Sarah shipped AUTH-92 — \"auth is so back.\"",
-  "✅ Devin merged 3 PRs and made the bot laugh.",
-  "⚠️ Josh has been wrestling AUTH-234 for 7 days.",
-  "✨ Friday summary loading... popcorn recommended.",
-];
+const digestData = {
+  channel: "#standup",
+  timestamp: "Today at 9:15 AM",
+  title: "Today's Sitdown Digest ☕",
+  users: [
+    {
+      name: "sarah.chen",
+      items: [
+        { emoji: "✅", text: "Completed auth token refresh logic", ticket: "ENG-342", joke: "tokens now tokenin'" },
+        { emoji: "✅", text: "Shipped error boundary for dashboard", ticket: "ENG-358", joke: "because even dashboards need emotional support sometimes. Boundaries are healthy." },
+        { emoji: "🚧", text: "Wrestling with flaky CI tests", ticket: "ENG-401", joke: "CI stands for \"Consistently Irritating\"" },
+      ],
+      question: "Should we retry 3 or 5 times before failing?",
+    },
+    {
+      name: "marcus.rivera",
+      items: [
+        { emoji: "✅", text: "Finished API rate limiting middleware", ticket: "ENG-389", joke: "slow down there, buckaroo" },
+      ],
+    },
+    {
+      name: "jenna.kim",
+      items: [
+        { emoji: "✅", text: "Merged user preferences migration", ticket: "ENG-377", joke: "data's got a new home" },
+      ],
+    },
+  ],
+  footer: "That's a wrap! Ship safe out there 🫡",
+  threadReplies: 3,
+};
 
 const humorModes = [
   {
@@ -115,7 +139,7 @@ export default function HomePage() {
               </a>
             ))}
           </nav>
-          <Button onClick={openDialog}>Start Free Trial</Button>
+          <Button onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}>Start for free</Button>
         </div>
       </header>
 
@@ -133,8 +157,8 @@ export default function HomePage() {
               Delivered with a side of dad jokes.
             </p>
             <div className="flex flex-wrap items-center gap-4">
-              <Button size="lg" onClick={openDialog}>
-                Try Sitdown Free →
+              <Button size="lg" onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}>
+                Start for free →
               </Button>
               <Button size="lg" variant="outline">
                 See it in action
@@ -144,16 +168,62 @@ export default function HomePage() {
               Join 400+ teams who've reclaimed 3 hours/week of meeting time
             </p>
           </div>
-          <Card className="gradient-ring">
-            <CardHeader>
-              <CardTitle>Today's Sitdown digest</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm text-muted">
-              {digestLines.map((line) => (
-                <p key={line} className="rounded-xl border border-stroke bg-white px-4 py-3">
-                  {line}
-                </p>
-              ))}
+          <Card className="gradient-ring overflow-hidden">
+            <CardContent className="p-0">
+              {/* Message Header */}
+              <div className="flex items-center gap-2 border-b border-stroke px-4 py-3">
+                <span className="rounded bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+                  {digestData.channel}
+                </span>
+                <span className="text-xs text-muted">{digestData.timestamp}</span>
+              </div>
+
+              {/* Message Body */}
+              <div className="space-y-4 px-4 py-4">
+                {/* Title */}
+                <p className="font-semibold text-foreground">{digestData.title}</p>
+
+                {/* User Sections */}
+                {digestData.users.map((user, index) => (
+                  <div
+                    key={user.name}
+                    className={index > 0 ? "border-t border-stroke pt-3" : ""}
+                  >
+                    <p className="mb-2 text-sm">
+                      <span className="rounded bg-accent/10 px-1.5 py-0.5 font-medium text-accent">
+                        @{user.name}
+                      </span>
+                    </p>
+                    <ul className="space-y-1.5 text-sm text-muted">
+                      {user.items.map((item, itemIndex) => (
+                        <li key={itemIndex}>
+                          {item.emoji}{" "}
+                          {item.text}
+                          {item.ticket && (
+                            <span className="ml-1 text-muted/70">[{item.ticket}]</span>
+                          )}
+                          {item.joke && (
+                            <span className="text-muted/70"> — {item.joke}</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                    {user.question && (
+                      <p className="mt-2 text-sm text-amber-600">
+                        🙋 {user.name.split(".")[0].charAt(0).toUpperCase() + user.name.split(".")[0].slice(1)} asked: "{user.question}"
+                      </p>
+                    )}
+                  </div>
+                ))}
+
+                {/* Footer */}
+                <p className="pt-2 text-sm text-muted">{digestData.footer}</p>
+              </div>
+
+              {/* Thread Indicator */}
+              <div className="border-t border-stroke bg-background/50 px-4 py-2">
+                <p className="text-xs text-muted">🧵 {digestData.threadReplies} replies</p>
+              </div>
             </CardContent>
           </Card>
         </section>
@@ -343,46 +413,45 @@ export default function HomePage() {
           <div className="grid gap-6 md:grid-cols-2">
             <Card className="border-2 border-accent">
               <CardHeader>
-                <CardTitle>Team</CardTitle>
-                <p className="text-3xl font-semibold">€9/month</p>
+                <CardTitle>Let's get rolling</CardTitle>
+                <p className="text-3xl font-semibold">$2 per user/month</p>
               </CardHeader>
               <CardContent className="space-y-3 text-sm text-muted">
+                <p className="text-xs italic">We wish it was free, but we have to pay for tokens.</p>
                 <ul className="space-y-2">
-                  <li>Up to 15 teammates</li>
-                  <li>All humor modes</li>
-                  <li>All integrations</li>
-                  <li>Unlimited updates</li>
-                  <li>Friday summaries</li>
-                  <li>Blocker alerts</li>
-                  <li>Slack + Discord delivery</li>
+                  <li>✓ Unlimited teammates</li>
+                  <li>✓ Unlimited humor</li>
+                  <li>✓ Unlimited updates</li>
+                  <li>✓ Slack, Jira & Linear integrations</li>
+                  <li>✗ Limited sky (yes, the sky is the limit)</li>
                 </ul>
                 <Button className="w-full" onClick={openDialog}>
-                  Start free trial →
+                  Let's roll →
                 </Button>
               </CardContent>
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Growing</CardTitle>
-                <p className="text-3xl font-semibold">€3/user/month</p>
+                <CardTitle>Cheapskate</CardTitle>
+                <p className="text-3xl font-semibold">$0</p>
               </CardHeader>
               <CardContent className="space-y-3 text-sm text-muted">
+                <p className="text-xs italic">Love the product but hate paying? Bring your own Anthropic API key.</p>
                 <ul className="space-y-2">
-                  <li>For teams of 16+</li>
-                  <li>Everything in Team</li>
-                  <li>Priority support</li>
-                  <li>Custom humor training</li>
-                  <li>API access</li>
-                  <li>SAML SSO (coming soon)</li>
+                  <li>✓ Unlimited teammates</li>
+                  <li>✓ Unlimited humor</li>
+                  <li>✓ Unlimited updates</li>
+                  <li>✓ Slack, Jira & Linear integrations</li>
+                  <li>✗ Limited dignity (we won't judge... much)</li>
                 </ul>
                 <Button variant="outline" className="w-full" onClick={openDialog}>
-                  Talk to us →
+                  BYOK →
                 </Button>
               </CardContent>
             </Card>
           </div>
           <p className="text-sm text-muted">
-            14-day free trial. No credit card required. Cancel anytime. We'll only cry a little.
+            Cancel anytime. We'll only cry a little.
           </p>
           <div className="grid gap-4 md:grid-cols-3">
             {[
@@ -438,8 +507,8 @@ export default function HomePage() {
               And you deserve your mornings back.
             </p>
             <div className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button size="lg" onClick={openDialog}>
-                Start Your Free Trial →
+              <Button size="lg" onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}>
+                Start for free →
               </Button>
               <Button size="lg" variant="outline" className="border-white/40 text-white hover:bg-white/10">
                 Book a demo

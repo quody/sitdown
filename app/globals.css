@@ -21,3 +21,7 @@ body {
 .gradient-ring {
   background: radial-gradient(circle at top, rgba(255, 106, 61, 0.16), transparent 65%);
 }
+
+section[id] {
+  scroll-margin-top: 6rem;
+}
