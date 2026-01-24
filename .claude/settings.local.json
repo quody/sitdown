@@ -3,7 +3,8 @@
     "allow": [
       "Bash(find:*)",
       "Bash(bun install:*)",
-      "Bash(bun run build:*)"
+      "Bash(bun run build:*)",
+      "WebFetch(domain:www.remotion.dev)"
     ]
   }
 }
