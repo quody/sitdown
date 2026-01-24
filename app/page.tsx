@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePostHog } from "posthog-js/react";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
@@ -110,7 +110,15 @@ export default function HomePage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [source, setSource] = useState<"paid" | "byok">("paid");
+  const [isFlipped, setIsFlipped] = useState(false);
   const posthog = usePostHog();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsFlipped((prev) => !prev);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   const openPaidDialog = () => {
     posthog.capture("pricing_dialog_opened", { tier: "paid" });
@@ -145,86 +153,129 @@ export default function HomePage() {
       <main>
         <section className="section grid gap-12 pb-20 pt-16 md:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-6">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-muted">
+            <p className="animate-fade-in-blur animate-delay-100 text-sm font-semibold uppercase tracking-[0.3em] text-muted">
               Lose the standup, keep the updates
             </p>
-            <h1 className="font-display text-4xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
+            <h1 className="animate-fade-in-blur animate-delay-200 font-display text-4xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
               Standups are dead.<br />Long live the sit-down.
             </h1>
-            <p className="text-lg text-muted">
+            <p className="animate-fade-in-blur animate-delay-300 text-lg text-muted">
               Your team's updates, actually worth reading. Auto-generated from Linear, Jira &amp; GitHub.
               Delivered with a side of dad jokes.
             </p>
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="animate-fade-in-blur animate-delay-400 flex flex-wrap items-center gap-4">
               <Button size="lg" onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}>
                 Get started →
               </Button>
-              <Button size="lg" variant="outline">
-                See it in action
-              </Button>
             </div>
-            <p className="text-sm font-semibold text-foreground">
+            <p className="animate-fade-in-blur animate-delay-500 text-sm font-semibold text-foreground">
               Join teams who've reclaimed many hours of meeting time
             </p>
           </div>
-          <Card className="gradient-ring overflow-hidden">
-            <CardContent className="p-0">
-              {/* Message Header */}
-              <div className="flex items-center gap-2 border-b border-stroke px-4 py-3">
-                <span className="rounded bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
-                  {digestData.channel}
-                </span>
-                <span className="text-xs text-muted">{digestData.timestamp}</span>
-              </div>
-
-              {/* Message Body */}
-              <div className="space-y-4 px-4 py-4">
-                {/* Title */}
-                <p className="font-semibold text-foreground">{digestData.title}</p>
-
-                {/* User Sections */}
-                {digestData.users.map((user, index) => (
-                  <div
-                    key={user.name}
-                    className={index > 0 ? "border-t border-stroke pt-3" : ""}
-                  >
-                    <p className="mb-2 text-sm">
-                      <span className="rounded bg-accent/10 px-1.5 py-0.5 font-medium text-accent">
-                        @{user.name}
+          <div className="animate-fade-in-blur animate-delay-300 flip-card">
+            <div className={`flip-card-inner ${isFlipped ? "flipped" : ""}`}>
+              <div className="flip-card-front">
+                <Card className="gradient-ring overflow-hidden">
+                  <CardContent className="p-0">
+                    <div className="flex items-center gap-2 border-b border-stroke px-4 py-3">
+                      <span className="rounded bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+                        {digestData.channel}
                       </span>
-                    </p>
-                    <ul className="space-y-1.5 text-sm text-muted">
-                      {user.items.map((item, itemIndex) => (
-                        <li key={itemIndex}>
-                          {item.emoji}{" "}
-                          {item.text}
-                          {item.ticket && (
-                            <span className="ml-1 text-muted/70">[{item.ticket}]</span>
+                      <span className="text-xs text-muted">{digestData.timestamp}</span>
+                    </div>
+                    <div className="space-y-4 px-4 py-4">
+                      <p className="font-semibold text-foreground">{digestData.title}</p>
+                      {digestData.users.map((user, index) => (
+                        <div
+                          key={user.name}
+                          className={index > 0 ? "border-t border-stroke pt-3" : ""}
+                        >
+                          <p className="mb-2 text-sm">
+                            <span className="rounded bg-accent/10 px-1.5 py-0.5 font-medium text-accent">
+                              @{user.name}
+                            </span>
+                          </p>
+                          <ul className="space-y-1.5 text-sm text-muted">
+                            {user.items.map((item, itemIndex) => (
+                              <li key={itemIndex}>
+                                {item.emoji}{" "}
+                                {item.text}
+                                {item.ticket && (
+                                  <span className="ml-1 text-muted/70">[{item.ticket}]</span>
+                                )}
+                                {item.joke && (
+                                  <span className="text-muted/70"> — {item.joke}</span>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                          {user.question && (
+                            <p className="mt-2 text-sm text-amber-600">
+                              🙋 {user.name.split(".")[0].charAt(0).toUpperCase() + user.name.split(".")[0].slice(1)} asked: [ENG-421] "{user.question}"
+                            </p>
                           )}
-                          {item.joke && (
-                            <span className="text-muted/70"> — {item.joke}</span>
-                          )}
-                        </li>
+                        </div>
                       ))}
-                    </ul>
-                    {user.question && (
-                      <p className="mt-2 text-sm text-amber-600">
-                        🙋 {user.name.split(".")[0].charAt(0).toUpperCase() + user.name.split(".")[0].slice(1)} asked: [ENG-421] "{user.question}"
-                      </p>
-                    )}
-                  </div>
-                ))}
-
-                {/* Footer */}
-                <p className="pt-2 text-sm text-muted">{digestData.footer}</p>
+                      <p className="pt-2 text-sm text-muted">{digestData.footer}</p>
+                    </div>
+                    <div className="border-t border-stroke bg-background/50 px-4 py-2">
+                      <p className="text-xs text-muted">🧵 {digestData.threadReplies} replies</p>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
-
-              {/* Thread Indicator */}
-              <div className="border-t border-stroke bg-background/50 px-4 py-2">
-                <p className="text-xs text-muted">🧵 {digestData.threadReplies} replies</p>
+              <div className="flip-card-back">
+                <Card className="gradient-ring overflow-hidden">
+                  <CardContent className="p-0">
+                    <div className="flex items-center gap-2 border-b border-stroke px-4 py-3">
+                      <span className="rounded bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+                        {digestData.channel}
+                      </span>
+                      <span className="text-xs text-muted">{digestData.timestamp}</span>
+                    </div>
+                    <div className="space-y-4 px-4 py-4">
+                      <p className="font-semibold text-foreground">{digestData.title}</p>
+                      {digestData.users.map((user, index) => (
+                        <div
+                          key={user.name}
+                          className={index > 0 ? "border-t border-stroke pt-3" : ""}
+                        >
+                          <p className="mb-2 text-sm">
+                            <span className="rounded bg-accent/10 px-1.5 py-0.5 font-medium text-accent">
+                              @{user.name}
+                            </span>
+                          </p>
+                          <ul className="space-y-1.5 text-sm text-muted">
+                            {user.items.map((item, itemIndex) => (
+                              <li key={itemIndex}>
+                                {item.emoji}{" "}
+                                {item.text}
+                                {item.ticket && (
+                                  <span className="ml-1 text-muted/70">[{item.ticket}]</span>
+                                )}
+                                {item.joke && (
+                                  <span className="text-muted/70"> — {item.joke}</span>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                          {user.question && (
+                            <p className="mt-2 text-sm text-amber-600">
+                              🙋 {user.name.split(".")[0].charAt(0).toUpperCase() + user.name.split(".")[0].slice(1)} asked: [ENG-421] "{user.question}"
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                      <p className="pt-2 text-sm text-muted">{digestData.footer}</p>
+                    </div>
+                    <div className="border-t border-stroke bg-background/50 px-4 py-2">
+                      <p className="text-xs text-muted">🧵 {digestData.threadReplies} replies</p>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </section>
 
         <section id="problem" className="section space-y-6 py-16">
