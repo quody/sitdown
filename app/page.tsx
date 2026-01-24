@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { usePostHog } from "posthog-js/react";
+import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -25,7 +27,7 @@ const digestData = {
         { emoji: "✅", text: "Shipped error boundary for dashboard", ticket: "ENG-358", joke: "because even dashboards need emotional support sometimes. Boundaries are healthy." },
         { emoji: "🚧", text: "Wrestling with flaky CI tests", ticket: "ENG-401", joke: "CI stands for \"Consistently Irritating\"" },
       ],
-      question: "Should we retry 3 or 5 times before failing?",
+      question: "User somehow has a negative balance, should that even be possible?",
     },
     {
       name: "marcus.rivera",
@@ -34,7 +36,7 @@ const digestData = {
       ],
     },
     {
-      name: "jenna.kim",
+      name: "jenna.reed",
       items: [
         { emoji: "✅", text: "Merged user preferences migration", ticket: "ENG-377", joke: "data's got a new home" },
       ],
@@ -92,37 +94,34 @@ const fridayFormats = [
 const testimonials = [
   {
     quote:
-      "We replaced our 9 AM standup with Sitdown three months ago. Productivity up, meeting fatigue down, and I've learned my team is surprisingly into Haiku Mode.",
-    author: "CTO, 40-person startup",
+      "We replaced our 12 PM standup with Sitdown three months ago. It removed a big distraction, and uncovers more blockers than our daily ever did.",
+    author: "CTO, 20-person startup",
   },
   {
     quote:
-      "The Friday sports commentary summaries get forwarded to our investors now. They think we're 'culturally innovative.' We're just lazy and funny.",
-    author: "Engineering Manager",
-  },
-  {
-    quote:
-      "Finally, a standup bot that doesn't feel like it was designed by someone who's never actually been in a standup.",
-    author: "Senior Developer",
+      "It's controversial but AI humour makes me laugh more often than our team's actual humour.",
+    author: "Head of Engineering",
   },
 ];
 
-const logos = [
-  "Parcelly",
-  "Mindloom",
-  "SproutHQ",
-  "Fluxly",
-  "Orbitline",
-  "Nimbus",
-  "Metricly",
-  "Puzzlebox",
-];
+const logos: string[] = [];
 
 export default function HomePage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [source, setSource] = useState<"paid" | "byok">("paid");
+  const posthog = usePostHog();
 
-  const openDialog = () => {
+  const openPaidDialog = () => {
+    posthog.capture("pricing_dialog_opened", { tier: "paid" });
+    setSource("paid");
+    setDialogOpen(true);
+    setSubmitted(false);
+  };
+
+  const openByokDialog = () => {
+    posthog.capture("pricing_dialog_opened", { tier: "byok" });
+    setSource("byok");
     setDialogOpen(true);
     setSubmitted(false);
   };
@@ -139,7 +138,7 @@ export default function HomePage() {
               </a>
             ))}
           </nav>
-          <Button onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}>Start for free</Button>
+          <Button onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}>Get started</Button>
         </div>
       </header>
 
@@ -158,14 +157,14 @@ export default function HomePage() {
             </p>
             <div className="flex flex-wrap items-center gap-4">
               <Button size="lg" onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}>
-                Start for free →
+                Get started →
               </Button>
               <Button size="lg" variant="outline">
                 See it in action
               </Button>
             </div>
             <p className="text-sm font-semibold text-foreground">
-              Join 400+ teams who've reclaimed 3 hours/week of meeting time
+              Join teams who've reclaimed many hours of meeting time
             </p>
           </div>
           <Card className="gradient-ring overflow-hidden">
@@ -210,7 +209,7 @@ export default function HomePage() {
                     </ul>
                     {user.question && (
                       <p className="mt-2 text-sm text-amber-600">
-                        🙋 {user.name.split(".")[0].charAt(0).toUpperCase() + user.name.split(".")[0].slice(1)} asked: "{user.question}"
+                        🙋 {user.name.split(".")[0].charAt(0).toUpperCase() + user.name.split(".")[0].slice(1)} asked: [ENG-421] "{user.question}"
                       </p>
                     )}
                   </div>
@@ -237,13 +236,12 @@ export default function HomePage() {
           </p>
           <p className="max-w-3xl text-muted">
             Meanwhile, in Slack: "Can someone recap what Sarah said? I was on mute making coffee." The dirty
-            secret? 78% of developers say standups kill their flow. And 71% admit they zone out during other
+            secret? Most developers say standups kill their flow and that they zone out during other
             people's updates. We're all just performing productivity instead of actually being productive.
           </p>
           <Card className="max-w-3xl bg-foreground text-white shadow-hero">
             <CardContent className="p-6 text-sm">
-              “Our standups had become status theater. Everyone reciting lines, nobody listening.” — Engineering
-              Lead, Series B Startup
+              “Dailies suck and are a waste of time” — Most common opinion amongst Youtube Software Engineer influencers
             </CardContent>
           </Card>
         </section>
@@ -307,7 +305,6 @@ export default function HomePage() {
               </Card>
             ))}
           </div>
-          <Button variant="outline">→ See more examples</Button>
         </section>
 
         <section className="section space-y-8 py-16">
@@ -391,7 +388,7 @@ export default function HomePage() {
                   Looks like @josh has been in an epic battle with AUTH-234 for 7 days now. The ticket has seen
                   things. Josh has seen things.
                 </p>
-                <p>→ View ticket | → Offer to pair | → Send moral support</p>
+                <p>→ View ticket | → Send moral support</p>
               </CardContent>
             </Card>
             <Card>
@@ -399,7 +396,7 @@ export default function HomePage() {
                 <CardTitle>Light-hearted delivery, serious utility.</CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-muted">
-                Blockers get addressed 40% faster when they're surfaced with humor instead of judgment. (We made
+                Blockers get addressed 41% faster when they're surfaced with humor instead of judgment. (We made
                 that stat up, but it feels true, right?)
               </CardContent>
             </Card>
@@ -425,7 +422,7 @@ export default function HomePage() {
                   <li>✓ Slack, Jira & Linear integrations</li>
                   <li>✗ Limited sky (yes, the sky is the limit)</li>
                 </ul>
-                <Button className="w-full" onClick={openDialog}>
+                <Button className="w-full" onClick={openPaidDialog}>
                   Let's roll →
                 </Button>
               </CardContent>
@@ -444,7 +441,7 @@ export default function HomePage() {
                   <li>✓ Slack, Jira & Linear integrations</li>
                   <li>✗ Limited dignity (we won't judge... much)</li>
                 </ul>
-                <Button variant="outline" className="w-full" onClick={openDialog}>
+                <Button variant="outline" className="w-full" onClick={openByokDialog}>
                   BYOK →
                 </Button>
               </CardContent>
@@ -508,7 +505,7 @@ export default function HomePage() {
             </p>
             <div className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Button size="lg" onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}>
-                Start for free →
+                Get started →
               </Button>
               <Button size="lg" variant="outline" className="border-white/40 text-white hover:bg-white/10">
                 Book a demo
@@ -534,15 +531,19 @@ export default function HomePage() {
           ) : (
             <DialogHeader className="space-y-4">
               <div className="space-y-2">
-                <DialogTitle>Start your Sitdown trial</DialogTitle>
+                <DialogTitle>Get access to Sitdown</DialogTitle>
                 <DialogDescription>
-                  Join the waitlist to get early access. We'll email you when your invite is ready.
+                  This was supposed to stay internal. But I like your face. Leave your email and I'll sneak you in.
                 </DialogDescription>
               </div>
               <form
                 className="space-y-4"
-                onSubmit={(event) => {
+                onSubmit={async (event) => {
                   event.preventDefault();
+                  const form = event.currentTarget;
+                  const email = new FormData(form).get("email") as string;
+                  await supabase.from("signups").insert({ email, source });
+                  posthog.capture("email_submitted", { source });
                   setSubmitted(true);
                 }}
               >
@@ -556,7 +557,7 @@ export default function HomePage() {
                   Request access
                 </Button>
                 <p className="text-xs text-muted">
-                  This is a preview experience. Submitting will add you to our early-access list.
+                  Submitting will add you to our early-access list.
                 </p>
               </form>
             </DialogHeader>
