@@ -46,6 +46,37 @@ const digestData = {
   threadReplies: 3,
 };
 
+const fridayDigestData = {
+  channel: "#product",
+  timestamp: "Today at 3:15 PM",
+  title: "Friday Product Summary 🎉",
+  users: [
+    {
+      name: "alex.thompson",
+      items: [
+        { emoji: "🚀", text: "Launched new onboarding flow to 100% of users", ticket: "PROD-112", joke: "they grow up so fast" },
+        { emoji: "📊", text: "Conversion up 23% since Tuesday", ticket: "PROD-108", joke: "stonks" },
+      ],
+    },
+    {
+      name: "priya.sharma",
+      items: [
+        { emoji: "✅", text: "Closed 14 user interviews this week", ticket: "PROD-98", joke: "my calendar is now a crime scene" },
+        { emoji: "📝", text: "Drafted Q2 roadmap proposal", ticket: "PROD-115", joke: "it's giving... ambitious" },
+      ],
+      question: "Should we prioritize mobile app or integrations for Q2?",
+    },
+    {
+      name: "david.kim",
+      items: [
+        { emoji: "🎨", text: "Finalized new design system tokens", ticket: "PROD-103", joke: "pixels have never looked so organized" },
+      ],
+    },
+  ],
+  footer: "Weekend mode: activated. Touch grass responsibly 🌿",
+  threadReplies: 7,
+};
+
 const humorModes = [
   {
     title: "Dad Mode",
@@ -229,13 +260,13 @@ export default function HomePage() {
                   <CardContent className="p-0">
                     <div className="flex items-center gap-2 border-b border-stroke px-4 py-3">
                       <span className="rounded bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
-                        {digestData.channel}
+                        {fridayDigestData.channel}
                       </span>
-                      <span className="text-xs text-muted">{digestData.timestamp}</span>
+                      <span className="text-xs text-muted">{fridayDigestData.timestamp}</span>
                     </div>
                     <div className="space-y-4 px-4 py-4">
-                      <p className="font-semibold text-foreground">{digestData.title}</p>
-                      {digestData.users.map((user, index) => (
+                      <p className="font-semibold text-foreground">{fridayDigestData.title}</p>
+                      {fridayDigestData.users.map((user, index) => (
                         <div
                           key={user.name}
                           className={index > 0 ? "border-t border-stroke pt-3" : ""}
@@ -261,15 +292,15 @@ export default function HomePage() {
                           </ul>
                           {user.question && (
                             <p className="mt-2 text-sm text-amber-600">
-                              🙋 {user.name.split(".")[0].charAt(0).toUpperCase() + user.name.split(".")[0].slice(1)} asked: [ENG-421] "{user.question}"
+                              🙋 {user.name.split(".")[0].charAt(0).toUpperCase() + user.name.split(".")[0].slice(1)} asked: "{user.question}"
                             </p>
                           )}
                         </div>
                       ))}
-                      <p className="pt-2 text-sm text-muted">{digestData.footer}</p>
+                      <p className="pt-2 text-sm text-muted">{fridayDigestData.footer}</p>
                     </div>
                     <div className="border-t border-stroke bg-background/50 px-4 py-2">
-                      <p className="text-xs text-muted">🧵 {digestData.threadReplies} replies</p>
+                      <p className="text-xs text-muted">🧵 {fridayDigestData.threadReplies} replies</p>
                     </div>
                   </CardContent>
                 </Card>
