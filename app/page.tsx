@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { usePostHog } from "posthog-js/react";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
@@ -143,45 +143,13 @@ export default function HomePage() {
   const [source, setSource] = useState<"paid" | "byok">("paid");
   const [isFlipped, setIsFlipped] = useState(false);
   const posthog = usePostHog();
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const startFlipTimer = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
+  useEffect(() => {
+    const interval = setInterval(() => {
       setIsFlipped((prev) => !prev);
-    }, 8000);
+    }, 4000);
+    return () => clearInterval(interval);
   }, []);
-
-  const triggerFlip = useCallback(() => {
-    setIsFlipped((prev) => !prev);
-    startFlipTimer();
-  }, [startFlipTimer]);
-
-  useEffect(() => {
-    startFlipTimer();
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [startFlipTimer]);
-
-  useEffect(() => {
-    const h2Element = document.querySelector("#problem h2");
-    if (!h2Element) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            triggerFlip();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    observer.observe(h2Element);
-    return () => observer.disconnect();
-  }, [triggerFlip]);
 
   const openPaidDialog = () => {
     posthog.capture("pricing_dialog_opened", { tier: "paid" });
@@ -355,7 +323,7 @@ export default function HomePage() {
           </p>
           <Card className="max-w-3xl bg-foreground text-white shadow-hero">
             <CardContent className="p-6 text-sm">
-              “I still get haunted in my dreams by the amount of standups I had to go through in my previous jobs” — ex-Netflix software engineer
+              “Dailies suck and are a waste of time” — Most common opinion amongst Youtube Software Engineer influencers
             </CardContent>
           </Card>
         </section>
