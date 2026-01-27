@@ -525,7 +525,7 @@ export default function HomePage() {
             <Card className="border-2 border-accent">
               <CardHeader>
                 <CardTitle>Let's get rolling</CardTitle>
-                <p className="text-3xl font-semibold">$2 per user/month</p>
+                <p className="text-3xl font-semibold"><span className="line-through decoration-accent/60 decoration-2">$2 per user/month</span></p>
               </CardHeader>
               <CardContent className="space-y-3 text-sm text-muted">
                 <p className="text-xs italic">We wish it was free, but we have to pay for tokens.</p>
@@ -537,11 +537,14 @@ export default function HomePage() {
                   <li>✗ Limited sky (yes, the sky is the limit)</li>
                 </ul>
                 <Button className="w-full" onClick={openPaidDialog}>
-                  Let's roll →
+                  Join waitlist
                 </Button>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="relative overflow-hidden opacity-50 pointer-events-none select-none">
+              <div className="absolute inset-0 z-10 flex items-center justify-center">
+                <div className="h-[141%] w-px origin-center rotate-[30deg] bg-stroke" />
+              </div>
               <CardHeader>
                 <CardTitle>Cheapskate</CardTitle>
                 <p className="text-3xl font-semibold">$0</p>
@@ -555,8 +558,8 @@ export default function HomePage() {
                   <li>✓ Slack, Jira & Linear integrations</li>
                   <li>✗ Limited dignity (we won't judge... much)</li>
                 </ul>
-                <Button variant="outline" className="w-full" onClick={openByokDialog}>
-                  BYOK →
+                <Button variant="outline" className="w-full" disabled>
+                  Coming soon
                 </Button>
               </CardContent>
             </Card>
@@ -645,7 +648,7 @@ export default function HomePage() {
           ) : (
             <DialogHeader className="space-y-4">
               <div className="space-y-2">
-                <DialogTitle>Get access to Sitdown</DialogTitle>
+                <DialogTitle>Join the waitlist</DialogTitle>
                 <DialogDescription>
                   This was supposed to stay internal. But I like your face. Leave your email and I'll sneak you in.
                 </DialogDescription>
