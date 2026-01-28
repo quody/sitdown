@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState } from "react";
 import { usePostHog } from "posthog-js/react";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { SlackLayout } from "@/components/slack";
 
 const navLinks = [
   { label: "Problem", href: "#problem" },
@@ -14,68 +15,6 @@ const navLinks = [
   { label: "Humor Modes", href: "#humor" },
   { label: "Pricing", href: "#pricing" },
 ];
-
-const digestData = {
-  channel: "#standup",
-  timestamp: "Today at 9:15 AM",
-  title: "Today's Sitdown Digest ☕",
-  users: [
-    {
-      name: "sarah.chen",
-      items: [
-        { emoji: "✅", text: "Completed auth token refresh logic", ticket: "ENG-342", joke: "tokens now tokenin'" },
-        { emoji: "✅", text: "Shipped error boundary for dashboard", ticket: "ENG-358", joke: "because even dashboards need emotional support sometimes. Boundaries are healthy." },
-        { emoji: "🚧", text: "Wrestling with flaky CI tests", ticket: "ENG-401", joke: "CI stands for \"Consistently Irritating\"" },
-      ],
-      question: "User somehow has a negative balance, should that even be possible?",
-    },
-    {
-      name: "marcus.rivera",
-      items: [
-        { emoji: "✅", text: "Finished API rate limiting middleware", ticket: "ENG-389", joke: "slow down there, buckaroo" },
-      ],
-    },
-    {
-      name: "jenna.reed",
-      items: [
-        { emoji: "✅", text: "Merged user preferences migration", ticket: "ENG-377", joke: "data's got a new home" },
-      ],
-    },
-  ],
-  footer: "That's a wrap! Ship safe out there 🫡",
-  threadReplies: 3,
-};
-
-const fridayDigestData = {
-  channel: "#product",
-  timestamp: "Today at 3:15 PM",
-  title: "Friday Product Summary 🎉",
-  users: [
-    {
-      name: "alex.thompson",
-      items: [
-        { emoji: "🚀", text: "Launched new onboarding flow to 100% of users", ticket: "PROD-112", joke: "they grow up so fast" },
-        { emoji: "📊", text: "Conversion up 23% since Tuesday", ticket: "PROD-108", joke: "stonks" },
-      ],
-    },
-    {
-      name: "priya.sharma",
-      items: [
-        { emoji: "✅", text: "Closed 14 user interviews this week", ticket: "PROD-98", joke: "my calendar is now a crime scene" },
-        { emoji: "📝", text: "Drafted Q2 roadmap proposal", ticket: "PROD-115", joke: "it's giving... ambitious" },
-      ],
-      question: "Should we prioritize mobile app or integrations for Q2?",
-    },
-    {
-      name: "david.kim",
-      items: [
-        { emoji: "🎨", text: "Finalized new design system tokens", ticket: "PROD-103", joke: "pixels have never looked so organized" },
-      ],
-    },
-  ],
-  footer: "Weekend mode: activated. Touch grass responsibly 🌿",
-  threadReplies: 7,
-};
 
 const humorModes = [
   {
@@ -141,47 +80,7 @@ export default function HomePage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [source, setSource] = useState<"paid" | "byok">("paid");
-  const [isFlipped, setIsFlipped] = useState(false);
   const posthog = usePostHog();
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  const startFlipTimer = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      setIsFlipped((prev) => !prev);
-    }, 8000);
-  }, []);
-
-  const triggerFlip = useCallback(() => {
-    setIsFlipped((prev) => !prev);
-    startFlipTimer();
-  }, [startFlipTimer]);
-
-  useEffect(() => {
-    startFlipTimer();
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [startFlipTimer]);
-
-  useEffect(() => {
-    const h2Element = document.querySelector("#problem h2");
-    if (!h2Element) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            triggerFlip();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    observer.observe(h2Element);
-    return () => observer.disconnect();
-  }, [triggerFlip]);
 
   const openPaidDialog = () => {
     posthog.capture("pricing_dialog_opened", { tier: "paid" });
@@ -214,15 +113,15 @@ export default function HomePage() {
       </header>
 
       <main>
-        <section className="section grid gap-12 pb-20 pt-16 md:grid-cols-[1.1fr_0.9fr]">
-          <div className="space-y-6">
+        <section className="section pb-20 pt-16 overflow-visible">
+          <div className="space-y-6 mb-12 ml-12">
             <p className="animate-fade-in-blur animate-delay-100 text-sm font-semibold uppercase tracking-[0.3em] text-muted">
               Lose the standup, keep the updates
             </p>
             <h1 className="animate-fade-in-blur animate-delay-200 font-display text-4xl leading-tight text-foreground sm:text-5xl lg:text-6xl">
               Standups are dead.<br />Long live the sit-down.
             </h1>
-            <p className="animate-fade-in-blur animate-delay-300 text-lg text-muted">
+            <p className="animate-fade-in-blur animate-delay-300 text-lg text-muted max-w-2xl">
               Your team's updates, actually worth reading. Auto-generated from Linear, Jira &amp; GitHub.
               Delivered with a side of dad jokes.
             </p>
@@ -231,112 +130,13 @@ export default function HomePage() {
                 Get started →
               </Button>
             </div>
-            <p className="animate-fade-in-blur animate-delay-500 text-sm font-semibold text-foreground">
+            {/* <p className="animate-fade-in-blur animate-delay-500 text-sm font-semibold text-foreground">
               Join teams who've reclaimed many hours of meeting time
-            </p>
+            </p> */}
           </div>
-          <div className="animate-fade-in-blur animate-delay-300 flip-card">
-            <div className={`flip-card-inner ${isFlipped ? "flipped" : ""}`}>
-              <div className="flip-card-front">
-                <Card className="gradient-ring overflow-hidden">
-                  <CardContent className="p-0">
-                    <div className="flex items-center gap-2 border-b border-stroke px-4 py-3">
-                      <span className="rounded bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
-                        {digestData.channel}
-                      </span>
-                      <span className="text-xs text-muted">{digestData.timestamp}</span>
-                    </div>
-                    <div className="space-y-4 px-4 py-4">
-                      <p className="font-semibold text-foreground">{digestData.title}</p>
-                      {digestData.users.map((user, index) => (
-                        <div
-                          key={user.name}
-                          className={index > 0 ? "border-t border-stroke pt-3" : ""}
-                        >
-                          <p className="mb-2 text-sm">
-                            <span className="rounded bg-accent/10 px-1.5 py-0.5 font-medium text-accent">
-                              @{user.name}
-                            </span>
-                          </p>
-                          <ul className="space-y-1.5 text-sm text-muted">
-                            {user.items.map((item, itemIndex) => (
-                              <li key={itemIndex}>
-                                {item.emoji}{" "}
-                                {item.text}
-                                {item.ticket && (
-                                  <span className="ml-1 text-muted/70">[{item.ticket}]</span>
-                                )}
-                                {item.joke && (
-                                  <span className="text-muted/70"> — {item.joke}</span>
-                                )}
-                              </li>
-                            ))}
-                          </ul>
-                          {user.question && (
-                            <p className="mt-2 text-sm text-amber-600">
-                              🙋 {user.name.split(".")[0].charAt(0).toUpperCase() + user.name.split(".")[0].slice(1)} asked: [ENG-421] "{user.question}"
-                            </p>
-                          )}
-                        </div>
-                      ))}
-                      <p className="pt-2 text-sm text-muted">{digestData.footer}</p>
-                    </div>
-                    <div className="border-t border-stroke bg-background/50 px-4 py-2">
-                      <p className="text-xs text-muted">🧵 {digestData.threadReplies} replies</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-              <div className="flip-card-back">
-                <Card className="gradient-ring overflow-hidden">
-                  <CardContent className="p-0">
-                    <div className="flex items-center gap-2 border-b border-stroke px-4 py-3">
-                      <span className="rounded bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
-                        {fridayDigestData.channel}
-                      </span>
-                      <span className="text-xs text-muted">{fridayDigestData.timestamp}</span>
-                    </div>
-                    <div className="space-y-4 px-4 py-4">
-                      <p className="font-semibold text-foreground">{fridayDigestData.title}</p>
-                      {fridayDigestData.users.map((user, index) => (
-                        <div
-                          key={user.name}
-                          className={index > 0 ? "border-t border-stroke pt-3" : ""}
-                        >
-                          <p className="mb-2 text-sm">
-                            <span className="rounded bg-accent/10 px-1.5 py-0.5 font-medium text-accent">
-                              @{user.name}
-                            </span>
-                          </p>
-                          <ul className="space-y-1.5 text-sm text-muted">
-                            {user.items.map((item, itemIndex) => (
-                              <li key={itemIndex}>
-                                {item.emoji}{" "}
-                                {item.text}
-                                {item.ticket && (
-                                  <span className="ml-1 text-muted/70">[{item.ticket}]</span>
-                                )}
-                                {item.joke && (
-                                  <span className="text-muted/70"> — {item.joke}</span>
-                                )}
-                              </li>
-                            ))}
-                          </ul>
-                          {user.question && (
-                            <p className="mt-2 text-sm text-amber-600">
-                              🙋 {user.name.split(".")[0].charAt(0).toUpperCase() + user.name.split(".")[0].slice(1)} asked: "{user.question}"
-                            </p>
-                          )}
-                        </div>
-                      ))}
-                      <p className="pt-2 text-sm text-muted">{fridayDigestData.footer}</p>
-                    </div>
-                    <div className="border-t border-stroke bg-background/50 px-4 py-2">
-                      <p className="text-xs text-muted">🧵 {fridayDigestData.threadReplies} replies</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+          <div className="animate-fade-in-blur animate-delay-300 flex justify-center overflow-visible">
+            <div className="slack-scene scale-110 origin-top">
+              <SlackLayout />
             </div>
           </div>
         </section>

@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+/*
+--slack-aubergine: #3F0E40;
+  --slack-aubergine-dark: #350d36;
+  --slack-aubergine-darker: #1a0a1c;
+  --slack-aubergine-light: #4D2A51;
+*/
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(0, 0%, 9%);
+  --slack-aubergine: hsl(13, 100%, 96%);
+  --slack-aubergine-dark: hsl(10, 100%, 96%);
+  --slack-aubergine-darker: hsl(8, 100%, 95%);
+  --slack-aubergine-light: hsl(13, 100%, 96%);
+  --slack-aubergine-hover: hsla(0, 0%, 0%, 0.04);
+  --slack-aubergine-active: hsla(0, 0%, 0%, 0.08);
+  --slack-sidebar-text: hsl(300, 1%, 11%);
+  --slack-sidebar-text-secondary: hsla(300, 1%, 11%, 0.45);
+  --slack-highlight-purple: hsla(22, 96%, 43%, 0.10);
+  --slack-chat-bg: hsl(13, 100%, 98%);
+  --slack-chat-header-border: hsl(17, 35%, 92%);
+  --slack-text-primary: hsl(300, 1%, 11%);
+  --slack-text-secondary: hsl(330, 1%, 38%);
+  --slack-text-muted: hsl(0, 0%, 60%);
+  --slack-green: hsl(160, 100%, 24%);
+  --slack-blue: hsl(21, 97%, 44%);
+  --slack-badge-red: hsl(340, 75%, 50%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-slack-aubergine: var(--slack-aubergine);
+  --color-slack-aubergine-dark: var(--slack-aubergine-dark);
+  --color-slack-aubergine-darker: var(--slack-aubergine-darker);
+  --color-slack-aubergine-light: var(--slack-aubergine-light);
+  --color-slack-chat-bg: var(--slack-chat-bg);
+  --color-slack-text-primary: var(--slack-text-primary);
+  --color-slack-text-secondary: var(--slack-text-secondary);
+  --color-slack-green: var(--slack-green);
+  --color-slack-blue: var(--slack-blue);
+  --color-slack-badge-red: var(--slack-badge-red);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Lato', 'Slack-Lato', Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* 3D entrance animation */
+@keyframes slack-layer-in {
+  0% {
+    transform: translateZ(600px);
+    filter: blur(16px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateZ(0px);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+.slack-scene {
+  perspective: 2801px;
+}
+
+.slack-window {
+  transform: rotateX(21deg) rotateY(10deg) rotateZ(-8deg);
+  transform-style: preserve-3d;
+  /* no filter here — filter flattens preserve-3d */
+}
+
+.slack-3d-passthrough {
+  transform-style: preserve-3d;
+}
+
+.slack-layer {
+  animation: slack-layer-in 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform, filter, opacity;
+}
+
+/* .slack-layer-fade {
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%),
+                      linear-gradient(to right, black 0%, black 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%),
+              linear-gradient(to right, black 0%, black 55%, transparent 100%);
+  -webkit-mask-composite: destination-in;
+  mask-composite: intersect;
+}
+
+.slack-layer-fade-bottom {
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+}
+
+.slack-layer-fade-right {
+  -webkit-mask-image: linear-gradient(to right, black 0%, black 55%, transparent 100%);
+  mask-image: linear-gradient(to right, black 0%, black 55%, transparent 100%);
+} */
+
+.slack-layer-first {
+  animation-delay: 0s;
+}
+
+.slack-layer-sidebar {
+  animation-delay: 0.2s;
+}
+
+.slack-layer-chat {
+  animation-delay: 0.4s;
+}
+
+.slack-layer-rest {
+  animation-delay: 0.6s;
+}
