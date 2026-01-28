@@ -59,13 +59,13 @@ export default function ChatWindow() {
           avatarText="S"
           avatarColor="bg-[var(--slack-green)]"
           senderName="SitDown"
-          timestamp="8:37 PM"
+          timestamp="8:37 AM"
           isApp
           threadReply={{
             avatarText: 'A',
             avatarColor: 'bg-purple-500',
             count: 1,
-            timestamp: '8:40 PM',
+            timestamp: '8:40 AM',
           }}
         >
           <BlockKitHeader>Today&apos;s Sitdown Digest</BlockKitHeader>
@@ -120,7 +120,7 @@ export default function ChatWindow() {
           <BlockKitDivider />
 
           <BlockKitContext>
-            That&apos;s a wrap! Ship safe out there
+            That&apos;s a wrap! Ship safe out there ✌️
           </BlockKitContext>
         </Message>
       </div>

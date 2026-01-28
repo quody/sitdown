@@ -65,7 +65,7 @@ export default function ChatWindow() {
             avatarText: 'A',
             avatarColor: 'bg-purple-400',
             count: 1,
-            timestamp: '8:40 PM',
+            timestamp: '8:40 AM',
           }}
         >
           <BlockKitHeader>Today&apos;s Sitdown Digest ☕</BlockKitHeader>
