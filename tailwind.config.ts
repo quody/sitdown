@@ -6,22 +6,26 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#f6f4f0",
-        foreground: "#121212",
-        muted: "#6b6870",
+        background: "#faf9f7",
+        "background-alt": "#f3f1ed",
+        foreground: "#1a1a1a",
+        muted: "#71706e",
         accent: "#ff6a3d",
         "accent-dark": "#eb4f20",
+        "accent-light": "#fff0eb",
         card: "#ffffff",
-        stroke: "#e0ddd7"
+        stroke: "#e5e2dc"
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "Inter", "system-ui", "sans-serif"],
-        display: ["var(--font-display)", "Playfair Display", "serif"]
+        sans: ["var(--font-sans)", "DM Sans", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Fraunces", "serif"]
       },
       boxShadow: {
-        hero: "0 22px 60px rgba(18, 18, 18, 0.12)",
-        soft: "0 10px 30px rgba(18, 18, 18, 0.06)",
-        glow: "0 18px 40px rgba(255, 106, 61, 0.3)"
+        hero: "0 25px 80px rgba(18, 18, 18, 0.12)",
+        soft: "0 4px 20px rgba(18, 18, 18, 0.06)",
+        card: "0 2px 8px rgba(18, 18, 18, 0.04), 0 8px 32px rgba(18, 18, 18, 0.06)",
+        glow: "0 18px 50px rgba(255, 106, 61, 0.25)",
+        "glow-sm": "0 8px 30px rgba(255, 106, 61, 0.15)"
       }
     }
   },

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { DM_Sans, Fraunces } from "next/font/google";
 import "./globals.css";
 import { PostHogProvider } from "./providers";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-display" });
+const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-sans", weight: ["400", "500", "600", "700"] });
+const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-display", weight: ["600", "700", "800"] });
 
 export const metadata: Metadata = {
   title: "Sitdown — Lose the standup, keep the updates",
@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${dmSans.variable} ${fraunces.variable}`}>
       <body className="font-sans">
         <PostHogProvider>{children}</PostHogProvider>
       </body>
