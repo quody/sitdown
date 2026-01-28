@@ -4,22 +4,23 @@
 
 :root {
   color-scheme: light;
-  --slack-aubergine: hsl(13, 100%, 96%);
-  --slack-aubergine-dark: hsl(10, 100%, 96%);
-  --slack-aubergine-darker: hsl(8, 100%, 95%);
-  --slack-aubergine-light: hsl(13, 100%, 96%);
-  --slack-aubergine-hover: hsla(0, 0%, 0%, 0.04);
-  --slack-aubergine-active: hsla(0, 0%, 0%, 0.08);
-  --slack-sidebar-text: hsl(300, 1%, 11%);
-  --slack-sidebar-text-secondary: hsla(300, 1%, 11%, 0.45);
-  --slack-highlight-purple: hsla(22, 96%, 43%, 0.10);
-  --slack-chat-bg: hsl(13, 100%, 98%);
-  --slack-chat-header-border: hsl(17, 35%, 92%);
-  --slack-text-primary: hsl(300, 1%, 11%);
-  --slack-text-secondary: hsl(330, 1%, 38%);
-  --slack-text-muted: hsl(0, 0%, 60%);
+  /* Slack mockup - Warm Stone palette */
+  --slack-aubergine: hsl(40, 6%, 94%);
+  --slack-aubergine-dark: hsl(40, 5%, 92%);
+  --slack-aubergine-darker: hsl(40, 4%, 90%);
+  --slack-aubergine-light: hsl(40, 6%, 95%);
+  --slack-aubergine-hover: hsla(40, 10%, 50%, 0.08);
+  --slack-aubergine-active: hsla(40, 10%, 50%, 0.12);
+  --slack-sidebar-text: hsl(30, 5%, 15%);
+  --slack-sidebar-text-secondary: hsla(30, 5%, 15%, 0.5);
+  --slack-highlight: hsla(40, 20%, 50%, 0.12);
+  --slack-chat-bg: hsl(40, 4%, 98%);
+  --slack-chat-header-border: hsl(40, 8%, 90%);
+  --slack-text-primary: hsl(30, 5%, 15%);
+  --slack-text-secondary: hsl(30, 3%, 40%);
+  --slack-text-muted: hsl(30, 2%, 55%);
   --slack-green: hsl(160, 100%, 24%);
-  --slack-blue: hsl(21, 97%, 44%);
+  --slack-blue: hsl(215, 80%, 50%);
   --slack-badge-red: hsl(340, 75%, 50%);
 }
 

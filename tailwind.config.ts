@@ -12,7 +12,7 @@ const config: Config = {
         muted: "#71706e",
         accent: "#ff6a3d",
         "accent-dark": "#eb4f20",
-        "accent-light": "#fff0eb",
+        "accent-light": "#f7f6f4",
         card: "#ffffff",
         stroke: "#e5e2dc"
       },
