@@ -2,7 +2,7 @@ import SlackLayout from "./components/SlackLayout";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col items-center px-6 py-16 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col items-center px-6 py-16">
       <h1 className="text-4xl font-bold text-gray-900 mb-4 text-center">
         See how Sitdown works
       </h1>

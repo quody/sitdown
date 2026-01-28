@@ -36,7 +36,7 @@ function SkeletonDmItem({ width = 'w-16' }: { width?: string }) {
 
 export default function Sidebar() {
   return (
-    <div className="flex flex-col h-full bg-[var(--slack-aubergine)] w-[200px] shrink-0 text-[var(--slack-sidebar-text)]">
+    <div className="flex flex-col h-full bg-[var(--slack-sidebar-bg)] w-[200px] shrink-0 text-[var(--slack-sidebar-text)]">
       <WorkspaceHeader />
 
       {/* Scrollable content */}
@@ -90,13 +90,13 @@ export default function Sidebar() {
 
         {/* Apps */}
         <SidebarSection title="Apps">
-          <ChannelItem name="Sitdown" type="app" avatar="S" avatarColor="bg-blue-600" />
+          <ChannelItem name="Sitdown" type="app" avatar="S" avatarColor="bg-[var(--slack-green)]" />
         </SidebarSection>
       </div>
 
       {/* Bottom section */}
-      <div className="border-t border-black/10 px-4 py-3">
-        <button className="w-full py-1.5 px-3 border border-black/15 rounded text-[var(--slack-sidebar-text-secondary)] text-sm font-medium hover:bg-[var(--slack-aubergine-hover)] transition flex items-center justify-center gap-2">
+      <div className="border-t border-white/10 px-4 py-3">
+        <button className="w-full py-1.5 px-3 border border-white/15 rounded text-[var(--slack-sidebar-text-secondary)] text-sm font-medium hover:bg-[var(--slack-sidebar-hover)] transition flex items-center justify-center gap-2">
           <svg viewBox="0 0 20 20" className="w-4 h-4" fill="currentColor">
             <path d="M10 3a7 7 0 1 0 0 14 7 7 0 0 0 0-14M1.5 10a8.5 8.5 0 1 1 17 0 8.5 8.5 0 0 1-17 0" />
             <path d="M10 6a.75.75 0 0 1 .75.75v2.5h2.5a.75.75 0 0 1 0 1.5h-2.5v2.5a.75.75 0 0 1-1.5 0v-2.5h-2.5a.75.75 0 0 1 0-1.5h2.5v-2.5A.75.75 0 0 1 10 6" />

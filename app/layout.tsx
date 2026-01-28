@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { DM_Sans, Fraunces } from "next/font/google";
+import { Outfit, Fraunces } from "next/font/google";
 import "./globals.css";
 import { PostHogProvider } from "./providers";
 
-const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-sans", weight: ["400", "500", "600", "700"] });
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-sans", weight: ["400", "500", "600", "700"] });
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-display", weight: ["600", "700", "800"] });
 
 export const metadata: Metadata = {
@@ -17,9 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${fraunces.variable}`}>
+    <html lang="en" className={`${outfit.variable} ${fraunces.variable}`}>
       <body className="font-sans">
         <PostHogProvider>{children}</PostHogProvider>
+        <div className="noise-overlay" aria-hidden="true" />
       </body>
     </html>
   );

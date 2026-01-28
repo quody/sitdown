@@ -3,25 +3,29 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
-  /* Slack mockup - Warm Stone palette */
-  --slack-aubergine: hsl(40, 6%, 94%);
-  --slack-aubergine-dark: hsl(40, 5%, 92%);
-  --slack-aubergine-darker: hsl(40, 4%, 90%);
-  --slack-aubergine-light: hsl(40, 6%, 95%);
-  --slack-aubergine-hover: hsla(40, 10%, 50%, 0.08);
-  --slack-aubergine-active: hsla(40, 10%, 50%, 0.12);
-  --slack-sidebar-text: hsl(30, 5%, 15%);
-  --slack-sidebar-text-secondary: hsla(30, 5%, 15%, 0.5);
-  --slack-highlight: hsla(40, 20%, 50%, 0.12);
-  --slack-chat-bg: hsl(40, 4%, 98%);
-  --slack-chat-header-border: hsl(40, 8%, 90%);
-  --slack-text-primary: hsl(30, 5%, 15%);
-  --slack-text-secondary: hsl(30, 3%, 40%);
-  --slack-text-muted: hsl(30, 2%, 55%);
-  --slack-green: hsl(160, 100%, 24%);
-  --slack-blue: hsl(215, 80%, 50%);
-  --slack-badge-red: hsl(340, 75%, 50%);
+  color-scheme: dark;
+
+  /* Slack mockup - Dark Mode */
+  --slack-sidebar-bg: #0c0c0d;
+  --slack-sidebar-hover: rgba(255, 255, 255, 0.06);
+  --slack-sidebar-active: rgba(255, 255, 255, 0.1);
+  --slack-sidebar-text: #e4e4e7;
+  --slack-sidebar-text-secondary: rgba(228, 228, 231, 0.5);
+  --slack-highlight: rgba(16, 185, 129, 0.15);
+  --slack-chat-bg: #111113;
+  --slack-chat-header-border: #27272a;
+  --slack-text-primary: #fafafa;
+  --slack-text-secondary: #a1a1aa;
+  --slack-text-muted: #71717a;
+  --slack-green: #10b981;
+  --slack-blue: #3b82f6;
+  --slack-badge-red: #ef4444;
+  --slack-input-bg: #18181b;
+  --slack-border: #27272a;
+}
+
+html, body {
+  overflow-x: clip;
 }
 
 body {
@@ -33,18 +37,25 @@ body {
 }
 
 .glass-nav {
-  @apply sticky top-0 z-20 border-b border-stroke bg-background/80 backdrop-blur;
+  @apply sticky top-0 z-20 border-b border-stroke bg-background/90 backdrop-blur-xl;
 }
 
-.gradient-ring {
-  background: radial-gradient(circle at top, rgba(255, 106, 61, 0.16), transparent 65%);
+/* Gradient mesh background for hero */
+.gradient-mesh-bg {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.15), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(245, 158, 11, 0.08), transparent),
+    radial-gradient(ellipse 50% 50% at 0% 100%, rgba(16, 185, 129, 0.05), transparent);
 }
 
 section[id] {
   scroll-margin-top: 6rem;
 }
 
-/* Slack 3D entrance animation */
+/* ============================================
+   SLACK 3D ENTRANCE ANIMATION
+   ============================================ */
+
 @keyframes slack-layer-in {
   0% {
     transform: translateZ(600px);
@@ -92,7 +103,10 @@ section[id] {
   animation-delay: 2.7s;
 }
 
-/* Hero fade-in-blur animation */
+/* ============================================
+   HERO FADE-IN-BLUR ANIMATION
+   ============================================ */
+
 @keyframes fade-in-blur {
   from {
     opacity: 0;
@@ -126,9 +140,187 @@ section[id] {
 .animate-delay-1800 { animation-delay: 1800ms; }
 .animate-delay-2000 { animation-delay: 2000ms; }
 
+/* ============================================
+   SCROLL-TRIGGERED ANIMATIONS
+   ============================================ */
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.reveal {
+  opacity: 0;
+}
+
+.reveal.in-view {
+  animation: reveal-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.reveal-scale {
+  opacity: 0;
+}
+
+.reveal-scale.in-view {
+  animation: reveal-scale 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Staggered children */
+.reveal-stagger > * {
+  opacity: 0;
+}
+
+.reveal-stagger.in-view > *:nth-child(1) { animation: reveal-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0ms forwards; }
+.reveal-stagger.in-view > *:nth-child(2) { animation: reveal-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) 100ms forwards; }
+.reveal-stagger.in-view > *:nth-child(3) { animation: reveal-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) 200ms forwards; }
+.reveal-stagger.in-view > *:nth-child(4) { animation: reveal-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) 300ms forwards; }
+.reveal-stagger.in-view > *:nth-child(5) { animation: reveal-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) 400ms forwards; }
+.reveal-stagger.in-view > *:nth-child(6) { animation: reveal-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) 500ms forwards; }
+
+/* ============================================
+   CARD MICROANIMATIONS
+   ============================================ */
+
+.card-hover {
+  @apply transition-all duration-300 ease-out;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 16px 48px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Glow card on hover */
+.card-glow {
+  @apply relative transition-all duration-300;
+}
+
+.card-glow::before {
+  content: '';
+  @apply absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300;
+  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(16, 185, 129, 0.1), transparent 40%);
+  pointer-events: none;
+}
+
+.card-glow:hover::before {
+  opacity: 1;
+}
+
+/* ============================================
+   BUTTON MICROANIMATIONS
+   ============================================ */
+
+.btn-glow {
+  @apply relative overflow-hidden transition-all duration-200;
+}
+
+.btn-glow:hover {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), 0 0 40px rgba(16, 185, 129, 0.2);
+  transform: translateY(-1px);
+}
+
+.btn-glow:active {
+  transform: translateY(0);
+}
+
+/* Shimmer effect on buttons */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.btn-shimmer::after {
+  content: '';
+  @apply absolute inset-0 opacity-0 transition-opacity;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.btn-shimmer:hover::after {
+  opacity: 1;
+  animation: shimmer 0.8s ease-in-out;
+}
+
+/* ============================================
+   BORDER GLOW EFFECTS
+   ============================================ */
+
+.border-glow {
+  @apply relative;
+}
+
+.border-glow::before {
+  content: '';
+  @apply absolute -inset-px rounded-xl opacity-0 transition-opacity duration-500;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.5), transparent 50%, rgba(245, 158, 11, 0.3));
+  z-index: -1;
+}
+
+.border-glow:hover::before {
+  opacity: 1;
+}
+
+/* ============================================
+   TEXT GRADIENT
+   ============================================ */
+
+.text-gradient {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(135deg, #10b981 0%, #34d399 50%, #fbbf24 100%);
+}
+
+.text-gradient-spark {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+}
+
+/* ============================================
+   NOISE TEXTURE OVERLAY
+   ============================================ */
+
+.noise-overlay {
+  @apply pointer-events-none fixed inset-0 z-50 opacity-[0.015];
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-in-blur {
+  .animate-fade-in-blur,
+  .reveal,
+  .reveal-scale,
+  .reveal-stagger > * {
     animation: none;
     opacity: 1;
+  }
+
+  .card-hover:hover,
+  .btn-glow:hover {
+    transform: none;
   }
 }

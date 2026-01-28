@@ -1,7 +1,7 @@
 function ToolbarButton({ children, ariaLabel }: { children: React.ReactNode; ariaLabel: string }) {
   return (
     <button
-      className="w-7 h-7 flex items-center justify-center rounded hover:bg-gray-100 text-[var(--slack-text-secondary)] text-sm"
+      className="w-7 h-7 flex items-center justify-center rounded hover:bg-[var(--slack-sidebar-hover)] text-[var(--slack-text-secondary)] text-sm"
       aria-label={ariaLabel}
     >
       {children}
@@ -10,15 +10,15 @@ function ToolbarButton({ children, ariaLabel }: { children: React.ReactNode; ari
 }
 
 function ToolbarDivider() {
-  return <div className="w-px h-5 bg-[var(--slack-chat-header-border)] mx-0.5" />;
+  return <div className="w-px h-5 bg-[var(--slack-border)] mx-0.5" />;
 }
 
 export default function MessageInput() {
   return (
     <div className="px-5 pb-4 pt-1">
-      <div className="border border-[var(--slack-chat-header-border)] rounded-lg overflow-hidden focus-within:border-gray-400 focus-within:shadow-sm">
+      <div className="border border-[var(--slack-border)] rounded-lg overflow-hidden focus-within:border-[var(--slack-text-muted)] focus-within:shadow-sm">
         {/* Formatting toolbar */}
-        <div className="flex items-center gap-0.5 px-2 py-1 border-b border-[var(--slack-chat-header-border)] bg-gray-50/50">
+        <div className="flex items-center gap-0.5 px-2 py-1 border-b border-[var(--slack-border)] bg-[var(--slack-input-bg)]">
           <ToolbarButton ariaLabel="Bold">
             <span className="font-bold">B</span>
           </ToolbarButton>
@@ -70,7 +70,7 @@ export default function MessageInput() {
 
         {/* Input area */}
         <div
-          className="min-h-[44px] px-3 py-2.5 text-[15px] text-[var(--slack-text-muted)] outline-none"
+          className="min-h-[44px] px-3 py-2.5 text-[15px] text-[var(--slack-text-muted)] outline-none bg-[var(--slack-chat-bg)]"
           contentEditable
           suppressContentEditableWarning
           role="textbox"
@@ -80,7 +80,7 @@ export default function MessageInput() {
         </div>
 
         {/* Bottom toolbar */}
-        <div className="flex items-center justify-between px-2 py-1 border-t border-[var(--slack-chat-header-border)]">
+        <div className="flex items-center justify-between px-2 py-1 border-t border-[var(--slack-border)] bg-[var(--slack-chat-bg)]">
           <div className="flex items-center gap-0.5">
             <ToolbarButton ariaLabel="Attach">
               <svg viewBox="0 0 20 20" className="w-4 h-4" fill="currentColor">
@@ -118,12 +118,12 @@ export default function MessageInput() {
 
           <div className="flex items-center gap-1">
             {/* Send button */}
-            <button className="w-7 h-7 flex items-center justify-center rounded text-gray-300" aria-label="Send">
+            <button className="w-7 h-7 flex items-center justify-center rounded text-[var(--slack-text-muted)]" aria-label="Send">
               <svg viewBox="0 0 20 20" className="w-4 h-4" fill="currentColor">
                 <path d="M1.724 1.053a.5.5 0 0 0-.714.545l1.403 4.85a.5.5 0 0 0 .397.354l5.69.953c.268.053.268.437 0 .49l-5.69.953a.5.5 0 0 0-.397.354l-1.403 4.85a.5.5 0 0 0 .714.545l17-8.5a.5.5 0 0 0 0-.894z" />
               </svg>
             </button>
-            <button className="w-4 h-7 flex items-center justify-center rounded text-gray-400 hover:bg-gray-100">
+            <button className="w-4 h-7 flex items-center justify-center rounded text-[var(--slack-text-muted)] hover:bg-[var(--slack-sidebar-hover)]">
               <svg viewBox="0 0 20 20" className="w-3 h-3" fill="currentColor">
                 <path d="M5.293 7.293a1 1 0 0 1 1.414 0L10 10.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 0-1.414" />
               </svg>

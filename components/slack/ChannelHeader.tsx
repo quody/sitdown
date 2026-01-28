@@ -15,7 +15,7 @@ export default function ChannelHeader() {
 
       {/* Right: actions */}
       <div className="flex items-center gap-1.5">
-        <button className="p-1.5 rounded hover:bg-gray-100 text-[var(--slack-text-secondary)]" aria-label="Search">
+        <button className="p-1.5 rounded hover:bg-[var(--slack-sidebar-hover)] text-[var(--slack-text-secondary)]" aria-label="Search">
           <svg viewBox="0 0 20 20" className="w-4 h-4" fill="currentColor">
             <path fillRule="evenodd" d="M9 3a6 6 0 1 0 0 12A6 6 0 0 0 9 3M1.5 9a7.5 7.5 0 1 1 13.307 4.746l3.473 3.474a.75.75 0 1 1-1.06 1.06l-3.473-3.473A7.5 7.5 0 0 1 1.5 9" clipRule="evenodd" />
           </svg>
