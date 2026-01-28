@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { usePostHog } from "posthog-js/react";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
@@ -143,13 +143,45 @@ export default function HomePage() {
   const [source, setSource] = useState<"paid" | "byok">("paid");
   const [isFlipped, setIsFlipped] = useState(false);
   const posthog = usePostHog();
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startFlipTimer = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setIsFlipped((prev) => !prev);
+    }, 8000);
+  }, []);
+
+  const triggerFlip = useCallback(() => {
+    setIsFlipped((prev) => !prev);
+    startFlipTimer();
+  }, [startFlipTimer]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIsFlipped((prev) => !prev);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
+    startFlipTimer();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [startFlipTimer]);
+
+  useEffect(() => {
+    const h2Element = document.querySelector("#problem h2");
+    if (!h2Element) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            triggerFlip();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(h2Element);
+    return () => observer.disconnect();
+  }, [triggerFlip]);
 
   const openPaidDialog = () => {
     posthog.capture("pricing_dialog_opened", { tier: "paid" });
@@ -493,7 +525,7 @@ export default function HomePage() {
             <Card className="border-2 border-accent">
               <CardHeader>
                 <CardTitle>Let's get rolling</CardTitle>
-                <p className="text-3xl font-semibold"><span className="line-through decoration-accent/60 decoration-2">$2 per user/month</span></p>
+                <p className="text-3xl font-semibold"><span className="line-through line-through-width-20 decoration-accent/60 decoration-2">$10 per user/month</span></p>
               </CardHeader>
               <CardContent className="space-y-3 text-sm text-muted">
                 <p className="text-xs italic">We wish it was free, but we have to pay for tokens.</p>
