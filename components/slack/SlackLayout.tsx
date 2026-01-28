@@ -6,7 +6,7 @@ import ChatWindow from './ChatWindow';
 export default function SlackLayout() {
   return (
     <div className="slack-window">
-      <div className="h-[724px] w-full max-w-[1200px] flex flex-col rounded-xl border border-[var(--slack-chat-header-border)] slack-3d-passthrough bg-[var(--slack-chat-bg)]">
+      <div className="h-[824px] md:h-[724px] w-full max-w-[1200px] flex flex-col rounded-xl border border-[var(--slack-chat-header-border)] slack-3d-passthrough bg-[var(--slack-chat-bg)]">
         {/* Top navigation — earliest */}
         <div className="slack-layer slack-layer-fade-right slack-layer-first rounded-t-xl">
           <TopNav />

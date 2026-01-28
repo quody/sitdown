@@ -64,13 +64,8 @@ const fridayFormats = [
 const testimonials = [
   {
     quote:
-      "We replaced our 12 PM standup with Sitdown three months ago. It removed a big distraction, and uncovers more blockers than our daily ever did.",
-    author: "",
-  },
-  {
-    quote:
-      "It's controversial but AI humour makes me laugh more often than our team's actual humour.",
-    author: "",
+      "It's controversial but AI humour makes me laugh more often than people's actual humour.",
+    author: "My friend when I told him about Sitdown",
   },
 ];
 
@@ -113,7 +108,7 @@ export default function HomePage() {
       </header>
 
       <main>
-        <section className="section pb-24 pt-20 overflow-visible">
+        <section className="section pb-24 pt-20 overflow-hidden md:overflow-visible">
           <div className="space-y-8 mb-16">
             <p className="animate-fade-in-blur animate-delay-100 text-xs font-semibold uppercase tracking-[0.35em] text-accent">
               Lose the standup, keep the updates
@@ -131,15 +126,15 @@ export default function HomePage() {
               </Button>
             </div>
           </div>
-          <div className="flex justify-center overflow-visible">
-            <div className="slack-scene scale-110 origin-top">
+          <div className="flex justify-center overflow-hidden md:overflow-visible -mx-6 md:mx-0">
+            <div className="slack-scene md:scale-110 origin-top">
               <SlackLayout />
             </div>
           </div>
         </section>
 
-        <section id="problem" className="bg-background-alt mt-16 py-24 -mx-6 px-6 md:-mx-[calc((100vw-72rem)/2+1.5rem)] md:px-[calc((100vw-72rem)/2+1.5rem)]">
-          <div className="max-w-6xl mx-auto space-y-10">
+        <section id="problem" className="bg-background-alt mt-16 py-24 px-6 md:px-0 -mx-6 md:-mx-[calc((100vw-72rem)/2+1.5rem)] md:px-[calc((100vw-72rem)/2+1.5rem)]">
+          <div className="max-w-6xl mx-auto space-y-10 px-6 md:px-0">
             <h2 className="font-display text-4xl font-bold text-foreground lg:text-5xl">Let's be honest about standups.</h2>
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
@@ -184,7 +179,7 @@ export default function HomePage() {
                 <CardTitle className="text-xl">📥 Auto-import</CardTitle>
               </CardHeader>
               <CardContent className="text-muted">
-                Pulls commits, PRs, tickets moved, comments added. Your work speaks for itself (finally).
+                Pulls tickets moved, comments added. Your work speaks for itself (finally).
               </CardContent>
             </Card>
             <Card className="shadow-card border-l-4 border-l-accent border-t-0 border-r-0 border-b-0">
@@ -192,7 +187,7 @@ export default function HomePage() {
                 <CardTitle className="text-xl">✨ Humor modes</CardTitle>
               </CardHeader>
               <CardContent className="text-muted">
-                Dad Mode. Meme Mode. Haiku Mode. Corporate BS Generator (for irony). Pick your vibe.
+                Dad Mode. Meme Mode. Haiku Mode. Corporate BS Generator (warning: might actually lower productivity). Pick your vibe.
               </CardContent>
             </Card>
             <Card className="shadow-card border-l-4 border-l-accent border-t-0 border-r-0 border-b-0">
@@ -230,8 +225,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="bg-foreground text-white py-24 -mx-6 px-6 md:-mx-[calc((100vw-72rem)/2+1.5rem)] md:px-[calc((100vw-72rem)/2+1.5rem)]">
-          <div className="max-w-6xl mx-auto space-y-12">
+        <section className="bg-foreground text-white py-24 -mx-6 md:-mx-[calc((100vw-72rem)/2+1.5rem)] md:px-[calc((100vw-72rem)/2+1.5rem)]">
+          <div className="max-w-6xl mx-auto space-y-12 px-12 md:px-0">
             <div className="space-y-4">
               <h2 className="font-display text-4xl font-bold lg:text-5xl">Setup time: 4 minutes.<br /><span className="text-accent">Time saved: 2+ hours/week.</span></h2>
             </div>
@@ -294,8 +289,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="bg-background-alt py-24 -mx-6 px-6 md:-mx-[calc((100vw-72rem)/2+1.5rem)] md:px-[calc((100vw-72rem)/2+1.5rem)]">
-          <div className="max-w-6xl mx-auto space-y-12">
+        <section className="bg-background-alt py-24 -mx-6 md:-mx-[calc((100vw-72rem)/2+1.5rem)] px-6 md:px-0">
+          <div className="max-w-6xl mx-auto space-y-12 px-6 md:px-0">
             <div className="space-y-4 max-w-3xl">
               <h2 className="font-display text-4xl font-bold text-foreground">Blockers that actually get unblocked.</h2>
               <p className="text-xl text-muted">
@@ -393,7 +388,7 @@ export default function HomePage() {
               {
                 question: "What if my team has no sense of humor?",
                 answer:
-                  "We have a \"Professional with Personality\" mode that's 90% useful, 10% whimsy. Baby steps.",
+                  "Wait until we launch the \"Professional with Personality\" mode that's 90% less funny, 90% more like your boss.",
               },
               {
                 question: "Will this make my standups obsolete?",
@@ -439,9 +434,6 @@ export default function HomePage() {
               <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <Button size="lg" className="shadow-glow" onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}>
                   Get started →
-                </Button>
-                <Button size="lg" variant="outline" className="border-white/40 text-white hover:bg-white/10">
-                  Book a demo
                 </Button>
               </div>
               <p className="mt-8 text-sm text-white/60">Setup takes 4 minutes. No meetings required. (Obviously.)</p>
