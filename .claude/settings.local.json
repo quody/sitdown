@@ -4,7 +4,9 @@
       "Bash(find:*)",
       "Bash(bun install:*)",
       "Bash(bun run build:*)",
-      "WebFetch(domain:www.remotion.dev)"
+      "WebFetch(domain:www.remotion.dev)",
+      "WebSearch",
+      "Bash(curl:*)"
     ]
   }
 }
